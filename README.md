@@ -28,9 +28,12 @@ The `generate_new_data()` function uses the **inferred parameters** from Step 2 
 This process ensures that the new dataset is statistically modeled on the original, without using the original hardcoded parameters, thus fulfilling the main requirement of the task.
 
 ### Step 4: Verify Similarity
-The final and most critical step is to provide evidence that the new dataset is indeed "similar" to the original. The `visual_verification()` function was implemented for this purpose. Similarity is assessed both visually and can be extended with statistical tests.
+This is the most critical step. To prove that the new dataset is "similar" to the original, both statistical tests and visual comparisons were carried out:
+*   **Statistical Verification:**
+      - **Chi-Squared Goodness-of-Fit Test:** To compare the distribution of the categorical column (`Category1`) between the two datasets.
+      - **Two-Sample Kolmogorov-Smirnov (KS) Test:** To compare the distributions of the continuous columns (`Value1` and `Value2`). This test is ideal as it checks if two samples are drawn from the same underlying distribution.
 
-- **Visual Verification:**
+*  **Visual Verification:**
     - **Categorical Data (`Category1`):** A grouped bar chart is generated to visually compare the counts of each category in the original versus the new dataset.
     - **Continuous Data (`Value1`, `Value2`):** Overlaid Kernel Density Estimate (KDE) plots are used to compare the distributions. If the datasets are similar, these curves will closely overlap, indicating a similar shape, mean, and variance.
 
@@ -41,10 +44,11 @@ To run this script, you will need Python 3.8+ and the following libraries:
 - `numpy`
 - `matplotlib`
 - `seaborn`
+- `scipy`
 
 You can install these dependencies using pip:
 ```bash
-pip install pandas numpy matplotlib seaborn
+pip install pandas numpy matplotlib seaborn scipy
 ```
 
 ## 4. Usage
