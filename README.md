@@ -97,7 +97,7 @@ Kolmogorov-Smirnov Test for 'Value2':
 The script will generate a window containing three plots. The close alignment between the "Original" and "New" data in all three plots provides strong visual evidence of similarity.
 
 
-![Visual Comparison of Datasets](https'://i.imgur.com/your-plot-image-url.png') 
+![Visual Comparison of Datasets](https://github.com/DrUkachi/bth-swe-worktask/blob/main/visual_verification.png') 
 
 
 ## 6. Conclusion
