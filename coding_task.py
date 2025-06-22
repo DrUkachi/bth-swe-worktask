@@ -3,6 +3,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import warnings
+
+from scipy import stats
 warnings.filterwarnings('ignore')
 
 def generate_original_data(num_samples=500, seed=123):
@@ -67,6 +69,42 @@ def generate_new_data(parameters, num_samples, seed):
 
   return new_df
 
+def verify_similarity(original_df, new_df):
+    """Performs statistical verification of similarity."""
+    print("\n Statistical Verification:")
+    
+    # Chi-Squared test for Category1
+    # This test compares the frequency counts of categories between the two datasets.
+    # Null Hypothesis (H0): The distributions are the same.
+    # A high p-value (> 0.05) means we fail to reject H0, which is our desired outcome.
+    original_counts = original_df['Category1'].value_counts().sort_index()
+    new_counts = new_df['Category1'].value_counts().reindex(original_counts.index).fillna(0)
+    
+    chi2, p_cat = stats.chisquare(f_obs=new_counts, f_exp=original_counts)
+    
+    print(f"\nChi-Squared Test for 'Category1':")
+    print(f"  This test checks if the categorical distributions are the same.")
+    print(f"  Statistic: {chi2:.4f}, P-value: {p_cat:.4f}")
+    if p_cat > 0.05:
+        print("  Result: The distributions are not significantly different (Good).")
+    else:
+        print("  Result: The distributions are significantly different (Bad).")
+    
+    # KS test for continuous variables
+    # This test checks if two continuous samples come from the same distribution.
+    # Null Hypothesis (H0): The two samples are from the same distribution.
+    # A high p-value (> 0.05) is our desired outcome.
+    for col in ['Value1', 'Value2']:
+        ks_stat, p_val = stats.ks_2samp(original_df[col], new_df[col])
+        print(f"\nKolmogorov-Smirnov Test for '{col}':")
+        print(f"  This test checks if the continuous distributions are the same.")
+        print(f"  Statistic: {ks_stat:.4f}, P-value: {p_val:.4f}")
+        if p_val > 0.05:
+            print("  Result: The distributions are not significantly different (Good).")
+        else:
+            print("  Result: The distributions are significantly different (Bad).")
+
+
 def visual_verification(original_df, new_df):
   """
     Creates and displays plots to visually compare the two datasets.
@@ -74,7 +112,7 @@ def visual_verification(original_df, new_df):
     - A grouped bar chart for the categorical column.
     - Overlaid Kernel Density Plots for the continuous columns.
   """
-  print("\n--- Generating Visual Verification Plots ---")
+  print("\nGenerating Visual Verification Plots:")
 
   # Set a nice style for the plots
   sns.set_style("whitegrid")
@@ -135,6 +173,9 @@ if __name__ == "__main__":
     
     # Generate new data based on the inferred parameters
     new_df = generate_new_data(inferred_parameters, NUM_SAMPLES, SEED)
+
+    # Statistical verification of the original and new datasets
+    verify_similarity(original_df.copy(), new_df.copy())
     
     # Visual verification of the original and new datasets
     visual_verification(original_df, new_df)

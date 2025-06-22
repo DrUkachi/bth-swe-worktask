@@ -6,7 +6,7 @@ This repository contains the solution to the coding task provided as part of the
 
 The goal is to analyze a given dataset, infer its underlying statistical properties, and then use those inferred properties to generate a new, similar dataset. A key constraint is to **not** use the original, hardcoded sampling parameters for the new generation. Finally, the similarity between the original and new datasets must be verified.
 
-The provided script `visual_verify.py` accomplishes this entire pipeline.
+The provided script `coding_task.py` accomplishes this entire pipeline.
 
 ## 2. Methodology
 
@@ -70,7 +70,26 @@ Value2 Mean: 19.903824406779698, Std: 5.972238085924904
 
 Generated a new dataset with 10000 samples.
 
+
+Statistical Verification:
+
+Chi-Squared Test for 'Category1':
+  This test checks if the categorical distributions are the same.
+  Statistic: 4.3312, P-value: 0.3630
+  Result: The distributions are not significantly different (Good).
+
+Kolmogorov-Smirnov Test for 'Value1':
+  This test checks if the continuous distributions are the same.
+  Statistic: 0.0107, P-value: 0.6161
+  Result: The distributions are not significantly different (Good).
+
+Kolmogorov-Smirnov Test for 'Value2':
+  This test checks if the continuous distributions are the same.
+  Statistic: 0.0073, P-value: 0.9527
+  Result: The distributions are not significantly different (Good).
+
 --- Generating Visual Verification Plots ---
+
 ```
 
 ### Visual Output
